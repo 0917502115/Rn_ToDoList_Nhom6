@@ -11,15 +11,41 @@ import {
 export const BMI = () => {
   const [weight, setWeight] = useState('');
   const [height, setHeight] = useState('');
-  const [BMI, setBMI] = useState(0);
+  const [bMi, setBMI] = useState(0);
+  const [bmiPhanloai, setBmiPhanLoai] = useState('');
 
+  const classifyBMI = (bmiValue) => {
+    if (bmiValue < 18.5) {
+      return 'Cân nặng thấp (gầy)';
+    } else if (bmiValue >= 18.5 && bmiValue < 25) {
+      return 'Bình thường';
+    } else if (bmiValue >= 25 && bmiValue < 25.99) {
+      return 'Thừa cân';
+    } else if (  bmiValue >25 && bmiValue <30) {
+      return 'Tiền béo phì'; 
+    } else if (  bmiValue >30 && bmiValue <35) {
+      return 'Béo phì I'; 
+    } else if (  bmiValue >35 && bmiValue <40) {
+      return 'Béo phì II'; 
+    }
+     else {
+      return 'Béo phì III';
+    }
+  };
   const computeBMI = () => {
     const weightInKg = parseFloat(weight);
     const heightInM = parseFloat(height) / 100;
     const bmi = weightInKg / (heightInM * heightInM);
     setBMI(bmi);
+    const phanloai = classifyBMI(bmi);
+    setBmiPhanLoai(phanloai);
   };
-
+  const clean =()=>{
+    setWeight ('');
+    setHeight('');
+    setBMI(0);
+    setBmiPhanLoai('');
+  };
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.inputContainer}>
@@ -40,9 +66,14 @@ export const BMI = () => {
           keyboardType="numeric"
         />
       </View>
-      <Text style={styles.result}>BMI: {BMI.toFixed(2)}</Text>
+
+      <Text style={styles.result}>BMI: {bMi.toFixed(2)}</Text>
+      <Text style={styles.result}>Tình trạng:{bmiPhanloai}</Text>
       <TouchableOpacity style={styles.button} onPress={computeBMI}>
         <Text style={styles.buttonText}>Tính toán</Text>
+      </TouchableOpacity>
+       <TouchableOpacity style={styles.button1} onPress={clean}>
+        <Text style={styles.buttonText}>Làm mới</Text>
       </TouchableOpacity>
     </ScrollView>
   );
@@ -73,6 +104,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   button: {
+    backgroundColor: 'lightgreen',
+    width: '40%',
+    height: 50,
+    marginTop: 7,
+    color: '#fff',
+    borderRadius: 30,
+    borderWidth: 2,
+    alignItems: 'center',
+    justifyContent: 'center',
+    left:-80,
+  },
+  button1: {
     backgroundColor: 'lightblue',
     width: '40%',
     height: 50,
@@ -82,6 +125,8 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     alignItems: 'center',
     justifyContent: 'center',
+    top: -57,
+    left:80,
   },
   buttonText: {
     fontSize: 16,
